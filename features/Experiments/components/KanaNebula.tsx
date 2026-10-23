@@ -18,6 +18,7 @@ interface StarKana {
 
 export default function KanaNebula() {
   const [stars, setStars] = useState<StarKana[]>([]);
+  const [spawnCount, setSpawnCount] = useState(0);
   const { playClick } = useClick();
   const idCounter = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -25,8 +26,10 @@ export default function KanaNebula() {
   useEffect(() => {
     const spawnStar = () => {
       const kanaObj = allKana[Math.floor(Math.random() * allKana.length)];
+      const nextId = idCounter.current++;
+      setSpawnCount(nextId);
       const newStar: StarKana = {
-        id: idCounter.current++,
+        id: nextId,
         kana: kanaObj.kana,
         romaji: kanaObj.romanji,
         x: Math.random() * 100,
@@ -146,7 +149,7 @@ export default function KanaNebula() {
       </motion.div>
 
       <div className='absolute right-10 bottom-10 z-20 font-mono text-[10px] tracking-widest text-indigo-400 uppercase opacity-20'>
-        Sector {Math.floor(idCounter.current / 10)}-Alpha
+        Sector {Math.floor(spawnCount / 10)}-Alpha
       </div>
     </div>
   );
